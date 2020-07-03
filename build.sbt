@@ -8,7 +8,11 @@ ThisBuild / organizationName := "syamantm"
 lazy val root = (project in file("."))
   .settings(
     name := "spark-playground",
-    libraryDependencies += scalaTest % Test
+    libraryDependencies ++= Seq(
+      sparkCore,
+      scalaTest,
+      sparkTestBase
+    )
   )
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
