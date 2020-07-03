@@ -1,0 +1,7 @@
+campaign,ad,impressions,click
+"my-campaign-1","my-ad-1",1,0
+"my-campaign-2","my-ad-2",1,1
+"my-campaign-1","my-ad-1",2,1
+"my-campaign-2","my-ad-2",1,0
+"my-campaign-1","my-ad-1",5,1
+"my-campaign-2","my-ad-2",10,1

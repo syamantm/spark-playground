@@ -5,13 +5,17 @@ ThisBuild / version          := "0.1.0-SNAPSHOT"
 ThisBuild / organization     := "io.github"
 ThisBuild / organizationName := "syamantm"
 
+enablePlugins(DockerComposePlugin)
+
 lazy val root = (project in file("."))
   .settings(
     name := "spark-playground",
     libraryDependencies ++= Seq(
       sparkCore,
+      postgresJdbc,
       scalaTest,
-      sparkTestBase
+      sparkTestBase,
+      commonsIo
     )
   )
 

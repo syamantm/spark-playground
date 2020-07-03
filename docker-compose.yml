@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db:
+    image: postgres:12.3
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ref_db
+
+  flyway:
+    image: flyway/flyway:6.5.0
+    links:
+      - db
+    depends_on:
+      - db
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    command: -url=jdbc:postgresql://db/ref_db -schemas=ref_db -user=postgres -password=postgres -connectRetries=60 migrate
