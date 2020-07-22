@@ -15,8 +15,8 @@ class MainSparkJobSpec extends AnyFlatSpec with Matchers with DataFrameSuiteBase
   "The main spark job" should "report execution count" in {
     implicit val _spark = spark
     val database = "reporting_db"
-    setUpDb(database)
-    setUpTables(database)
+    setupLocalHiveDb(database)
+    setupLocalHiveTables(database)
     val config = AppConfig(
       jdbcConfig = JdbcConfig(
         url = "jdbc:postgresql://localhost:5432/ref_db",
@@ -31,19 +31,7 @@ class MainSparkJobSpec extends AnyFlatSpec with Matchers with DataFrameSuiteBase
     df.head().getAs[Long]("value") should be(6L)
   }
 
-  it should "count activities" in {
-    val database = "reporting_db"
-    setUpDb(database)
-    setUpTables(database)
-
-    implicit val _spark = spark
-    val campaign = "my-campaign-1"
-    val impressionsCount = CountingJob.countActivities(campaign, database)
-
-    impressionsCount shouldBe(3)
-  }
-
-  protected def setUpDb(database: String) = {
+  protected def setupLocalHiveDb(database: String) = {
     spark.sql(s"CREATE DATABASE IF NOT EXISTS ${database} LOCATION '/tmp/reporting_db.db'")
     spark.sql(s"DROP TABLE IF EXISTS ${database}.activities")
     try {
@@ -54,7 +42,7 @@ class MainSparkJobSpec extends AnyFlatSpec with Matchers with DataFrameSuiteBase
     }
   }
 
-  protected def setUpTables(database: String) = {
+  protected def setupLocalHiveTables(database: String) = {
     val activitiesSchema = StructType(Array(
       StructField("campaign", StringType, nullable = false),
       StructField("ad", StringType, nullable = false),
